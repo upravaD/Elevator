@@ -1,6 +1,7 @@
 package TUI;
 
 import Elevator.*;
+import Elevator.Building.Floor.Human;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,33 +16,63 @@ public class ElevatorManager {
 
         lift = new Lift();
         this.building = building;
+
+        showBuilding();
     }
 
-    public void showBuilding(){
+    private void showBuilding(){
 
-        Collections.reverse(building.getFloorsList());
+        Direction direction = new Direction();
 
-        System.out.println("Общая картина здания: ");
-        System.out.println("============================================");
+        List<Building.Floor> x = new ArrayList<>(List.copyOf(building.getFloorsList()));
+        Collections.reverse(x);
+        //Collections.reverse(building.getFloorsList());
+
+        System.out.println("General view of the building: ");
+        System.out.println(direction.underLine());
 
         for (int i = 0; i < building.getFLOOR_COUNT(); i++) {
-            if (building.getFloorsList().get(i).getFLOOR_ID() < 10) {
-                System.out.println("  " + building.getFloorsList().get(i).getFLOOR_ID() + " | " + getFloorNeededList(i) + " | ");
-                System.out.println("============================================");
+
+            if (x.get(i).getFLOOR_ID() < 10) {
+
+                System.out.print("︙  " + x.get(i).getFLOOR_ID());
+                System.out.print(" ︙ " + building.getRightFloorList(i));
+
+                if (i == building.getFLOOR_COUNT()-1) {
+                    System.out.print(" ︙ " + direction.up + " ︙ ");
+                    liftMoving();
+                }
+                System.out.println();
+                System.out.println(direction.underLine());
+
             } else {
-                System.out.println(" " + building.getFloorsList().get(i).getFLOOR_ID() + " | " + getFloorNeededList(i) + " | ");
-                System.out.println("============================================");
+
+                System.out.print("︙ " + x.get(i).getFLOOR_ID());
+                System.out.print(" ︙ " + building.getRightFloorList(i));
+
+                if (i == building.getFLOOR_COUNT()-1) {
+                    System.out.print(" ︙ " + direction.down + " ︙ ");
+                    liftMoving();
+                }
+                System.out.println();
+                System.out.println(direction.underLine());
             }
         }
-        //потоки
     }
 
-    private List<Integer> getFloorNeededList(int floorId){
-        List<Integer> neededFloorList = new ArrayList<>();
-        for (int i = 0; i < building.getFloorsList().get(floorId).getHumanQueueList().size(); i++) {
-            neededFloorList.add(building.getFloorsList().get(floorId).getHumanQueueList().get(i).getNeededFloor());
+    public void liftMoving() {
+
+        if (lift.getHumanInList().isEmpty()) {
+            lift.setHumanInList(building
+                    .getFloorsList().get(building
+                            .getFLOOR_COUNT()-1).getHumanQueueList());
         }
-        return neededFloorList;
-    }
 
+        for (Human human : lift.getHumanInList()) {
+            System.out.print(" " + human.getRightFloor() + " ");
+        }
+        System.out.print(" ︙ ");
+        System.out.print(lift.getHumanInList());
+
+    }
 }

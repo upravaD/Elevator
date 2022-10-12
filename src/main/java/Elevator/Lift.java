@@ -8,7 +8,7 @@ import PropertiesReader.LiftPropertiesReader;
 public class Lift {
 
     private final int capacity;
-    private List<Human> humansInLift;
+    private List<Human> humanInList;
     private int currentFloor;
 
     public Lift() {
@@ -16,18 +16,18 @@ public class Lift {
         LiftPropertiesReader lpr = new LiftPropertiesReader();
         capacity = lpr.getCAPACITY();
         currentFloor = lpr.getSTART_FLOOR();
-        humansInLift = new ArrayList<>(capacity);
+        humanInList = new ArrayList<>(capacity);
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public List<Human> getHumansInLift() {
-        return humansInLift;
+    public List<Human> getHumanInList() {
+        return humanInList;
     }
-    public void setHumansInLift(List<Human> humansInLift) {
-        this.humansInLift = humansInLift;
+    public void setHumanInList(List<Human> humanInList) {
+        this.humanInList = humanInList;
     }
 
     public int getCurrentFloor() {

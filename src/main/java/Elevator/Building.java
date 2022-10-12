@@ -11,17 +11,10 @@ public class Building {
     private final int FLOOR_COUNT;
     private List<Floor> floorsList;
 
-    public List<Floor> getFloorsList() {
-        return floorsList;
-    }
-
-    public int getFLOOR_COUNT() {
-        return FLOOR_COUNT;
-    }
-
     public Building() {
 
         BuildingPropertiesReader bpr = new BuildingPropertiesReader();
+
         FLOOR_COUNT = new Random().nextInt(bpr.getMIN_FLOORS(), bpr.getMAX_FLOORS() + 1);
 
         floorsList = new ArrayList<>();
@@ -30,27 +23,49 @@ public class Building {
         }
     }
 
+    public List<Floor> getFloorsList() {
+        return floorsList;
+    }
+
+    public int getFLOOR_COUNT() {
+        return FLOOR_COUNT;
+    }
+
+    public List<Integer> getRightFloorList(int floorId){
+
+        List<Integer> rightFloorList = new ArrayList<>();
+
+        for (int i = 0; i < getFloorsList().get(floorId).getHumanQueueList().size(); i++) {
+            rightFloorList.add(getFloorsList().get(floorId).getHumanQueueList().get(i).getRightFloor());
+        }
+        return rightFloorList;
+    }
+
+
     public class Floor {
 
         private final int FLOOR_ID;
         private int humanQueueCount;
         private List<Human> humanQueueList;
 
+        public Floor(int floorId) {
+
+            FLOOR_ID = floorId;
+            generateQueue();
+        }
+
         public int getFLOOR_ID() {
             return FLOOR_ID;
         }
+
         public List<Human> getHumanQueueList() {
             return humanQueueList;
-        }
-
-        public Floor(int floorId) {
-            FLOOR_ID = floorId;
-            generateQueue();
         }
 
         public void generateQueue() {
 
             FloorPropertiesReader fpr = new FloorPropertiesReader();
+
             humanQueueCount = new Random().nextInt(fpr.getMIN_QUEUE(), fpr.getMAX_QUEUE() + 1);
 
             humanQueueList = new ArrayList<>();
@@ -59,24 +74,26 @@ public class Building {
             }
         }
 
+
         public class Human {
 
             private int currentFloor;
-            private int neededFloor;
+            private int rightFloor;
 
             public Human(int currentFloor) {
+
                 this.currentFloor = currentFloor;
-                generateNeededFloor();
+                generateRightFloor();
             }
 
-            public int getNeededFloor() {
-                return neededFloor;
+            public int getRightFloor() {
+                return rightFloor;
             }
 
-            private void generateNeededFloor() {
+            private void generateRightFloor() {
                 do {
-                    neededFloor = new Random().nextInt(1, FLOOR_COUNT + 1);
-                } while (currentFloor == neededFloor);
+                    rightFloor = new Random().nextInt(1, FLOOR_COUNT + 1);
+                } while (currentFloor == rightFloor);
             }
         }
     }
