@@ -9,7 +9,8 @@ import java.util.Random;
 public class Building {
 
     private final int FLOOR_COUNT;
-    private List<Floor> floorsList;
+    private final List<Floor> floorsList;
+    private List<Integer> rightFloorList;
 
     public Building() {
 
@@ -33,14 +34,13 @@ public class Building {
 
     public List<Integer> getRightFloorList(int floorId){
 
-        List<Integer> rightFloorList = new ArrayList<>();
+        rightFloorList = new ArrayList<>();
 
         for (int i = 0; i < getFloorsList().get(floorId).getHumanQueueList().size(); i++) {
             rightFloorList.add(getFloorsList().get(floorId).getHumanQueueList().get(i).getRightFloor());
         }
         return rightFloorList;
     }
-
 
     public class Floor {
 

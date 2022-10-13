@@ -7,8 +7,8 @@ public class Direction {
    enum direction {
       UP,DOWN;
 
-      public char[] repeat(int count) {
-         return new char[0];
+      public String repeat(int count) {
+         return null;
       }
    }
 

@@ -3,76 +3,86 @@ package TUI;
 import Elevator.*;
 import Elevator.Building.Floor.Human;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class ElevatorManager {
 
     private Lift lift;
     private Building building;
+    private String dir;
+    Direction direction;
+    Menu menu;
 
     public ElevatorManager(Building building) {
 
         lift = new Lift();
         this.building = building;
-
-        showBuilding();
+        direction = new Direction();
+        menu = new Menu();
+        dir = direction.up;
+        //showBuilding();
     }
 
-    private void showBuilding(){
+    public void showBuilding(){
 
-        Direction direction = new Direction();
-
-        List<Building.Floor> x = new ArrayList<>(List.copyOf(building.getFloorsList()));
-        Collections.reverse(x);
-        //Collections.reverse(building.getFloorsList());
-
-        System.out.println("General view of the building: ");
+        menu.getGeneralView();
         System.out.println(direction.underLine());
 
         for (int i = 0; i < building.getFLOOR_COUNT(); i++) {
 
-            if (x.get(i).getFLOOR_ID() < 10) {
+            System.out.print("︙ " + building.getFloorsList().get(i).getFLOOR_ID());
+            System.out.print(" ︙ " + building.getRightFloorList(i));
 
-                System.out.print("︙  " + x.get(i).getFLOOR_ID());
-                System.out.print(" ︙ " + building.getRightFloorList(i));
-
-                if (i == building.getFLOOR_COUNT()-1) {
-                    System.out.print(" ︙ " + direction.up + " ︙ ");
-                    liftMoving();
-                }
-                System.out.println();
-                System.out.println(direction.underLine());
-
-            } else {
-
-                System.out.print("︙ " + x.get(i).getFLOOR_ID());
-                System.out.print(" ︙ " + building.getRightFloorList(i));
-
-                if (i == building.getFLOOR_COUNT()-1) {
-                    System.out.print(" ︙ " + direction.down + " ︙ ");
-                    liftMoving();
-                }
-                System.out.println();
-                System.out.println(direction.underLine());
+            if (i == lift.getCurrentFloor()-1) {
+                System.out.print(" ︙ " + dir + " ︙ ");
+                liftMoving();
             }
+            System.out.println();
+            System.out.println(direction.underLine());
+        }
+
+        if (dir.equals(direction.up)) {
+            lift.moveUp();
+        } else {
+            lift.moveDown();
+        }
+
+        if (lift.getCurrentFloor() == building.getFLOOR_COUNT()) {
+            changeDirection();
+            System.out.print("changeDown");
+        }
+
+        if (lift.getCurrentFloor() == 1) {
+            changeDirection();
+            System.out.print("changeUp");
         }
     }
 
     public void liftMoving() {
 
-        if (lift.getHumanInList().isEmpty()) {
-            lift.setHumanInList(building
-                    .getFloorsList().get(building
-                            .getFLOOR_COUNT()-1).getHumanQueueList());
+        if (!(building.getFloorsList().get(lift.getCurrentFloor() - 1).getHumanQueueList().isEmpty())) {
+            lift.humanOut(building);
+            if (dir.equals(direction.up)) {
+                lift.humanInUP(building);
+            } else {
+                lift.humanInDOWN(building);
+            }
+        } else {
+            lift.humanOut(building);
+            System.out.print("empty");
         }
 
+        //вывод
+        System.out.print("︙");
         for (Human human : lift.getHumanInList()) {
             System.out.print(" " + human.getRightFloor() + " ");
         }
-        System.out.print(" ︙ ");
-        System.out.print(lift.getHumanInList());
+        System.out.print("︙");
+    }
 
+    private void changeDirection(){
+        if (dir.equals(direction.up)) {
+            dir = direction.down;
+        } else {
+            dir = direction.up;
+        }
     }
 }
