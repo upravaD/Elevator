@@ -1,7 +1,6 @@
 package PropertiesReader;
 
 public class FloorPropertiesReader extends PropertiesReader {
-
     private final int MIN_QUEUE;
     private final int MAX_QUEUE;
 

@@ -13,7 +13,6 @@ public class Building {
     private List<Integer> rightFloorList;
 
     public Building() {
-
         BuildingPropertiesReader bpr = new BuildingPropertiesReader();
 
         FLOOR_COUNT = new Random().nextInt(bpr.getMIN_FLOORS(), bpr.getMAX_FLOORS() + 1);
@@ -33,7 +32,6 @@ public class Building {
     }
 
     public List<Integer> getRightFloorList(int floorId){
-
         rightFloorList = new ArrayList<>();
 
         for (int i = 0; i < getFloorsList().get(floorId).getHumanQueueList().size(); i++) {
@@ -43,13 +41,11 @@ public class Building {
     }
 
     public class Floor {
-
         private final int FLOOR_ID;
         private int humanQueueCount;
         private List<Human> humanQueueList;
 
         public Floor(int floorId) {
-
             FLOOR_ID = floorId;
             generateQueue();
         }
@@ -63,7 +59,6 @@ public class Building {
         }
 
         public void generateQueue() {
-
             FloorPropertiesReader fpr = new FloorPropertiesReader();
 
             humanQueueCount = new Random().nextInt(fpr.getMIN_QUEUE(), fpr.getMAX_QUEUE() + 1);
@@ -76,12 +71,10 @@ public class Building {
 
 
         public class Human {
-
             private int currentFloor;
             private int rightFloor;
 
             public Human(int currentFloor) {
-
                 this.currentFloor = currentFloor;
                 generateRightFloor();
             }

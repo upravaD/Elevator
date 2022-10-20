@@ -1,7 +1,6 @@
 package PropertiesReader;
 
 public class LiftPropertiesReader extends PropertiesReader {
-
     private final int CAPACITY;
     private final int START_FLOOR;
 

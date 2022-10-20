@@ -1,4 +1,4 @@
-package TUI;
+package UI;
 
 public class Menu {
 
@@ -7,13 +7,13 @@ public class Menu {
 
     public Menu() {
         head = "OFFICE ELEVATOR SIMULATION";
-        generalView = "General view of the building: ";
+        generalView = "\u001B[34m" + "General view of the building: " + "\u001B[0m";
     }
 
     public void getHead() {
-        System.out.println("==========================");
+        System.out.println("\n==========================");
         System.out.println(head);
-        System.out.println("==========================\n");
+        System.out.println("==========================\n\n");
     }
 
     public void getGeneralView(){

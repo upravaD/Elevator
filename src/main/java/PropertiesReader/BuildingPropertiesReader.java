@@ -1,7 +1,6 @@
 package PropertiesReader;
 
 public class BuildingPropertiesReader extends PropertiesReader {
-
     private final int MIN_FLOORS;
     private final int MAX_FLOORS;
 
